@@ -1,0 +1,3321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFOOTBALL SHOWDOWN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00f3ff;
+            --secondary: #ff0055;
+            --accent: #9d4edd;
+            --dark: #0a0a15;
+            --darker: #05050c;
+            --light: #f0f8ff;
+            --gray: #2a2a3a;
+            --success: #00ff9d;
+            --warning: #ffcc00;
+            --info: #00b7ff;
+            
+            --glow-primary: 0 0 20px rgba(0, 243, 255, 0.7);
+            --glow-secondary: 0 0 20px rgba(255, 0, 85, 0.7);
+            --glow-accent: 0 0 20px rgba(157, 78, 221, 0.7);
+            --glow-success: 0 0 15px rgba(0, 255, 157, 0.7);
+            --glow-warning: 0 0 15px rgba(255, 204, 0, 0.7);
+            --glow-info: 0 0 15px rgba(0, 183, 255, 0.7);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(9, 9, 20, 0.8) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 243, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(157, 78, 221, 0.03) 0%, transparent 30%);
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(to bottom, rgba(10, 10, 21, 0.95) 0%, rgba(5, 5, 12, 0.9) 100%);
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            color: var(--primary);
+            font-size: 2.5rem;
+            filter: drop-shadow(var(--glow-primary));
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+        }
+        
+        .nav-links a.active {
+            color: var(--primary);
+            background: rgba(0, 243, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+        }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 15px;
+            right: 15px;
+            height: 2px;
+            background: var(--primary);
+            box-shadow: var(--glow-primary);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+            transition: transform 0.3s ease;
+        }
+        
+        .user-avatar:hover {
+            transform: scale(1.1);
+        }
+        
+        .role-badge {
+            background: linear-gradient(135deg, var(--secondary), #ff3385);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+        }
+        
+        /* Main Content */
+        main {
+            padding: 40px 0;
+            min-height: calc(100vh - 140px);
+        }
+        
+        .dashboard-section {
+            display: none;
+        }
+        
+        .dashboard-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+            color: var(--primary);
+            text-shadow: 0 0 15px rgba(0, 243, 255, 0.7);
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background: var(--primary);
+            box-shadow: var(--glow-primary);
+            border-radius: 5px;
+        }
+        
+        /* Cards */
+        .card {
+            background: rgba(20, 20, 40, 0.7);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 243, 255, 0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.7);
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 243, 255, 0.2);
+            border-color: rgba(0, 243, 255, 0.3);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s ease;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #00a8cc);
+            color: var(--dark);
+            box-shadow: var(--glow-primary);
+            animation: buttonPulse 2s infinite;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.9);
+            animation: none;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary), #cc0044);
+            color: white;
+            box-shadow: var(--glow-secondary);
+            animation: buttonPulseSecondary 2s infinite;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(255, 0, 85, 0.9);
+            animation: none;
+        }
+        
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent), #7b2cbf);
+            color: white;
+            box-shadow: var(--glow-accent);
+            animation: buttonPulseAccent 2s infinite;
+        }
+        
+        .btn-accent:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(157, 78, 221, 0.9);
+            animation: none;
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning), #e6b400);
+            color: var(--dark);
+            box-shadow: var(--glow-warning);
+            animation: buttonPulseWarning 2s infinite;
+        }
+        
+        .btn-warning:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(255, 204, 0, 0.9);
+            animation: none;
+        }
+        
+        .btn-info {
+            background: linear-gradient(135deg, var(--info), #0088cc);
+            color: white;
+            box-shadow: var(--glow-info);
+            animation: buttonPulseInfo 2s infinite;
+        }
+        
+        .btn-info:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(0, 183, 255, 0.9);
+            animation: none;
+        }
+        
+        /* Button Pulse Animations */
+        @keyframes buttonPulse {
+            0% { box-shadow: var(--glow-primary); }
+            50% { box-shadow: 0 0 25px rgba(0, 243, 255, 0.9); }
+            100% { box-shadow: var(--glow-primary); }
+        }
+        
+        @keyframes buttonPulseSecondary {
+            0% { box-shadow: var(--glow-secondary); }
+            50% { box-shadow: 0 0 25px rgba(255, 0, 85, 0.9); }
+            100% { box-shadow: var(--glow-secondary); }
+        }
+        
+        @keyframes buttonPulseAccent {
+            0% { box-shadow: var(--glow-accent); }
+            50% { box-shadow: 0 0 25px rgba(157, 78, 221, 0.9); }
+            100% { box-shadow: var(--glow-accent); }
+        }
+        
+        @keyframes buttonPulseWarning {
+            0% { box-shadow: var(--glow-warning); }
+            50% { box-shadow: 0 0 25px rgba(255, 204, 0, 0.9); }
+            100% { box-shadow: var(--glow-warning); }
+        }
+        
+        @keyframes buttonPulseInfo {
+            0% { box-shadow: var(--glow-info); }
+            50% { box-shadow: 0 0 25px rgba(0, 183, 255, 0.9); }
+            100% { box-shadow: var(--glow-info); }
+        }
+        
+        /* Tournament Cards */
+        .tournament-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .tournament-card {
+            background: linear-gradient(145deg, rgba(30, 30, 60, 0.9), rgba(15, 15, 35, 0.9));
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tournament-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 243, 255, 0.2);
+            border-color: rgba(0, 243, 255, 0.4);
+        }
+        
+        .tournament-type {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .type-league {
+            background: rgba(0, 243, 255, 0.2);
+            color: var(--primary);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+        }
+        
+        .type-champions {
+            background: rgba(157, 78, 221, 0.2);
+            color: var(--accent);
+            box-shadow: 0 0 10px rgba(157, 78, 221, 0.5);
+        }
+        
+        .type-worldcup {
+            background: rgba(255, 0, 85, 0.2);
+            color: var(--secondary);
+            box-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+        }
+        
+        .tournament-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        
+        .status-active {
+            background: rgba(0, 255, 157, 0.2);
+            color: var(--success);
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+        }
+        
+        .status-upcoming {
+            background: rgba(255, 204, 0, 0.2);
+            color: var(--warning);
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+        }
+        
+        .status-completed {
+            background: rgba(200, 200, 200, 0.2);
+            color: #ccc;
+            box-shadow: 0 0 10px rgba(200, 200, 200, 0.5);
+        }
+        
+        /* Match Cards */
+        .match-card {
+            background: rgba(25, 25, 45, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 5px solid var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .match-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 20px rgba(0, 243, 255, 0.2);
+            border-left-color: var(--secondary);
+        }
+        
+        .teams {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
+        }
+        
+        .team {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .team-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--light);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .team-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .vs {
+            font-weight: 900;
+            color: var(--primary);
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.7);
+        }
+        
+        .score {
+            display: flex;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            margin: 0 20px;
+            color: var(--light);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .match-info {
+            text-align: right;
+        }
+        
+        .match-date {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .match-round {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+        
+        th {
+            background: rgba(0, 243, 255, 0.1);
+            padding: 18px 15px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--primary);
+            border-bottom: 2px solid rgba(0, 243, 255, 0.3);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        tr:hover {
+            background: rgba(0, 243, 255, 0.05);
+        }
+        
+        .qualified {
+            background: rgba(0, 255, 157, 0.1);
+            border-left: 4px solid var(--success);
+        }
+        
+        /* Forms */
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(10, 10, 20, 0.8);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 8px;
+            color: var(--light);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 12, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-content {
+            background: linear-gradient(145deg, rgba(20, 20, 40, 0.95), rgba(10, 10, 25, 0.95));
+            width: 90%;
+            max-width: 700px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            box-shadow: 0 20px 50px rgba(0, 243, 255, 0.2);
+            padding: 30px;
+            position: relative;
+            animation: slideUp 0.5s ease;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: var(--light);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            color: var(--secondary);
+            transform: rotate(90deg);
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+            margin-bottom: 30px;
+        }
+        
+        .tab {
+            padding: 15px 30px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #aaa;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tab:hover {
+            color: var(--primary);
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        /* Admin Update Form */
+        .admin-update-form {
+            background: rgba(30, 30, 60, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            margin-bottom: 30px;
+        }
+        
+        .admin-update-form h3 {
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .admin-update-form .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        /* Player Prediction */
+        .prediction-card {
+            background: rgba(25, 25, 50, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(157, 78, 221, 0.3);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .prediction-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(157, 78, 221, 0.3);
+        }
+        
+        .prediction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(157, 78, 221, 0.2);
+        }
+        
+        .prediction-points {
+            background: rgba(157, 78, 221, 0.2);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            box-shadow: 0 0 10px rgba(157, 78, 221, 0.5);
+        }
+        
+        .prediction-form {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+        
+        .prediction-input {
+            width: 80px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        /* Live Updates Feed */
+        .updates-feed {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .update-item {
+            background: rgba(30, 30, 50, 0.7);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--info);
+            transition: all 0.3s ease;
+        }
+        
+        .update-item:hover {
+            transform: translateX(5px);
+            border-left-color: var(--primary);
+        }
+        
+        .update-time {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+        
+        .update-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .update-icon {
+            color: var(--info);
+            font-size: 1.2rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .tournament-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+            
+            .admin-update-form .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 20px;
+                padding: 15px 0;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .match-card {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .teams {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .score {
+                margin: 10px 0;
+            }
+            
+            .match-info {
+                text-align: center;
+            }
+            
+            .prediction-form {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo-text {
+                font-size: 1.4rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .tournament-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Admin specific styles */
+        .admin-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        /* Player specific styles */
+        .player-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(20, 20, 40, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(0, 243, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 243, 255, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 243, 255, 0.1);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.7);
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #aaa;
+        }
+        
+        /* Tournament Bracket */
+        .bracket-container {
+            overflow-x: auto;
+            padding: 20px 0;
+        }
+        
+        .bracket {
+            display: flex;
+            min-width: 1200px;
+            justify-content: space-around;
+        }
+        
+        .bracket-round {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            min-height: 600px;
+        }
+        
+        .bracket-match {
+            background: rgba(30, 30, 60, 0.8);
+            border-radius: 8px;
+            padding: 15px;
+            width: 250px;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            margin: 15px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .bracket-match:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+        }
+        
+        .round-title {
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        /* Live updates indicator */
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 0, 85, 0.2);
+            color: var(--secondary);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-left: 15px;
+        }
+        
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--secondary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--secondary);
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, rgba(30, 30, 60, 0.95), rgba(20, 20, 40, 0.95));
+            border-left: 5px solid var(--success);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 3000;
+            transform: translateX(150%);
+            transition: transform 0.5s ease;
+            max-width: 350px;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification-title {
+            font-weight: 700;
+            color: var(--success);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Leaderboard */
+        .leaderboard {
+            margin-top: 30px;
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            background: rgba(30, 30, 50, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .leaderboard-item:hover {
+            background: rgba(30, 30, 50, 0.8);
+            transform: translateX(5px);
+        }
+        
+        .leaderboard-rank {
+            font-size: 1.5rem;
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+            width: 50px;
+            text-align: center;
+        }
+        
+        .leaderboard-user {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .leaderboard-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        
+        .leaderboard-points {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--success);
+        }
+        
+        /* Fixture prediction stats */
+        .prediction-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .prediction-stat-item {
+            background: rgba(30, 30, 50, 0.5);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(157, 78, 221, 0.2);
+        }
+        
+        .prediction-stat-value {
+            font-size: 1.8rem;
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+        
+        .prediction-stat-label {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* Form indicators for standings */
+        .form-indicator {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            color: white;
+            text-align: center;
+            line-height: 24px;
+            margin-right: 3px;
+            font-weight: bold;
+        }
+        
+        .form-win {
+            background: var(--success);
+        }
+        
+        .form-draw {
+            background: var(--warning);
+        }
+        
+        .form-loss {
+            background: var(--secondary);
+        }
+        
+        /* Admin Login Protection */
+        .protected-section {
+            position: relative;
+        }
+        
+        .password-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(5, 5, 12, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            border-radius: 15px;
+        }
+        
+        .password-form {
+            background: rgba(20, 20, 40, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        .password-form h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        /* Coach Section */
+        .coach-section {
+            margin-top: 30px;
+        }
+        
+        .invite-link-box {
+            background: rgba(30, 30, 60, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(157, 78, 221, 0.3);
+            margin-bottom: 30px;
+        }
+        
+        .invite-link {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .invite-link input {
+            flex: 1;
+            background: rgba(10, 10, 20, 0.8);
+            border: 1px solid rgba(157, 78, 221, 0.5);
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .invite-link button {
+            white-space: nowrap;
+        }
+        
+        /* Player Registration Form */
+        .registration-form {
+            background: rgba(30, 30, 60, 0.8);
+            border-radius: 10px;
+            padding: 25px;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            margin-bottom: 30px;
+        }
+        
+        /* Fixtures Lock for Players */
+        .fixtures-lock {
+            text-align: center;
+            padding: 40px;
+            color: #aaa;
+        }
+        
+        .fixtures-lock-icon {
+            font-size: 4rem;
+            color: var(--warning);
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.5));
+        }
+        
+        /* Admin Only Badge */
+        .admin-only {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--secondary), #ff3385);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+            box-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+        }
+        
+        /* Real-time update animation */
+        @keyframes realtimeUpdate {
+            0% { background-color: rgba(0, 243, 255, 0.1); }
+            50% { background-color: rgba(0, 243, 255, 0.3); }
+            100% { background-color: rgba(0, 243, 255, 0.1); }
+        }
+        
+        .realtime-update {
+            animation: realtimeUpdate 1s ease;
+        }
+        
+        /* Button motion effects */
+        .btn-motion {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-motion::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(30deg);
+            animation: shine 3s infinite linear;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(30deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <div class="logo-text">EFOOTBALL SHOWDOWN</div>
+                </div>
+                
+                <ul class="nav-links">
+                    <li><a href="#" class="active" data-section="dashboard">Dashboard</a></li>
+                    <li><a href="#" data-section="tournaments">Tournaments</a></li>
+                    <li><a href="#" data-section="matches">Matches</a></li>
+                    <li><a href="#" data-section="predictions">Predictions</a></li>
+                    <li><a href="#" data-section="standings">Standings</a></li>
+                    <li><a href="#" data-section="brackets">Brackets</a></li>
+                    <li><a href="#" data-section="profile">Profile</a></li>
+                    <li><a href="#" data-section="coach" id="coach-link">Coach Section</a></li>
+                    <li><a href="#" data-section="admin" id="admin-link">Admin Panel<span class="admin-only">ADMIN</span></a></li>
+                </ul>
+                
+                <div class="user-info">
+                    <div class="user-avatar" id="user-avatar">AD</div>
+                    <div>
+                        <div class="user-name" id="user-name">Admin User</div>
+                        <div class="role-badge" id="role-badge">ADMIN</div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="dashboard-section active">
+                <div class="section-header">
+                    <h2 class="section-title">Dashboard</h2>
+                    <div>
+                        <span class="live-indicator">
+                            <span class="live-dot"></span>
+                            LIVE UPDATES
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Admin Controls (Only visible to admin) -->
+                <div class="admin-controls" id="admin-controls">
+                    <button class="btn btn-primary btn-motion" id="create-tournament-btn">
+                        <i class="fas fa-plus-circle"></i> Create Tournament
+                    </button>
+                    <button class="btn btn-secondary btn-motion" id="manage-teams-btn">
+                        <i class="fas fa-users"></i> Manage Teams
+                    </button>
+                    <button class="btn btn-accent btn-motion" id="generate-fixtures-btn">
+                        <i class="fas fa-calendar-alt"></i> Generate Fixtures <span class="admin-only">ADMIN</span>
+                    </button>
+                    <button class="btn btn-primary btn-motion" id="update-results-btn">
+                        <i class="fas fa-edit"></i> Update Match Results
+                    </button>
+                    <button class="btn btn-warning btn-motion" id="admin-update-btn">
+                        <i class="fas fa-bullhorn"></i> Send Update
+                    </button>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Active Tournaments</h3>
+                        <button class="btn btn-primary btn-sm btn-motion">View All</button>
+                    </div>
+                    
+                    <div class="tournament-grid" id="tournament-grid">
+                        <!-- Tournament cards will be generated here -->
+                    </div>
+                </div>
+                
+                <!-- Live Updates Feed -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Live Updates Feed</h3>
+                        <button class="btn btn-info btn-sm btn-motion" id="refresh-updates">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                    
+                    <div class="updates-feed" id="updates-feed">
+                        <!-- Updates will be loaded here -->
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Tournaments Section -->
+            <section id="tournaments" class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title">Tournaments</h2>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">All Tournaments</h3>
+                        <div>
+                            <button class="btn btn-primary btn-motion" id="filter-active">Active</button>
+                            <button class="btn btn-secondary btn-motion" id="filter-upcoming">Upcoming</button>
+                            <button class="btn btn-accent btn-motion" id="filter-completed">Completed</button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table id="tournaments-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Teams</th>
+                                    <th>Start Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tournaments-table-body">
+                                <!-- Tournament rows will be generated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Matches Section -->
+            <section id="matches" class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title">Matches & Fixtures</h2>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" data-tab="upcoming">Upcoming Matches</div>
+                    <div class="tab" data-tab="live">Live Matches</div>
+                    <div class="tab" data-tab="completed">Completed Matches</div>
+                    <div class="tab" data-tab="my-matches">My Team's Matches</div>
+                    <div class="tab" data-tab="fixtures">All Fixtures <span class="admin-only">ADMIN</span></div>
+                </div>
+                
+                <div class="tab-content active" id="upcoming-matches">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Upcoming Fixtures</h3>
+                            <button class="btn btn-primary btn-motion" id="refresh-upcoming">Refresh</button>
+                        </div>
+                        
+                        <div id="upcoming-matches-container">
+                            <!-- Match cards will be generated here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="live-matches">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Live Matches</h3>
+                            <span class="live-indicator">
+                                <span class="live-dot"></span>
+                                LIVE
+                            </span>
+                        </div>
+                        
+                        <div id="live-matches-container">
+                            <!-- Live match cards will be generated here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="completed-matches">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Match History</h3>
+                            <button class="btn btn-primary btn-motion" id="refresh-completed">Refresh</button>
+                        </div>
+                        
+                        <div id="completed-matches-container">
+                            <!-- Completed match cards will be generated here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="my-matches-tab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">My Team's Fixtures</h3>
+                            <button class="btn btn-primary btn-motion" id="refresh-my-matches">Refresh</button>
+                        </div>
+                        
+                        <div id="my-matches-container">
+                            <!-- User's team match cards will be generated here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fixtures Tab - Only visible to admin -->
+                <div class="tab-content protected-section" id="fixtures-tab">
+                    <div class="password-overlay" id="fixtures-password-overlay">
+                        <div class="password-form">
+                            <h3><i class="fas fa-lock"></i> Admin Access Required</h3>
+                            <p style="text-align: center; margin-bottom: 20px; color: #aaa;">Only administrators can create and edit fixtures</p>
+                            <div class="form-group">
+                                <label for="fixtures-password">Admin Password</label>
+                                <input type="password" id="fixtures-password" placeholder="Enter admin password">
+                            </div>
+                            <button class="btn btn-primary btn-motion" id="unlock-fixtures" style="width: 100%;">
+                                <i class="fas fa-unlock"></i> Unlock Fixtures Management
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Fixtures Management</h3>
+                            <span class="admin-only">ADMIN ONLY</span>
+                        </div>
+                        
+                        <div class="admin-controls">
+                            <button class="btn btn-primary btn-motion" id="create-fixture-btn">
+                                <i class="fas fa-plus-circle"></i> Create New Fixture
+                            </button>
+                            <button class="btn btn-secondary btn-motion" id="auto-generate-fixtures">
+                                <i class="fas fa-robot"></i> Auto-Generate Fixtures
+                            </button>
+                            <button class="btn btn-accent btn-motion" id="edit-fixture-btn">
+                                <i class="fas fa-edit"></i> Edit Existing Fixture
+                            </button>
+                        </div>
+                        
+                        <div style="margin-top: 30px;">
+                            <h3 style="color: var(--primary); margin-bottom: 20px;">All Fixtures</h3>
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Home Team</th>
+                                            <th>Away Team</th>
+                                            <th>Date</th>
+                                            <th>Round</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="all-fixtures-table">
+                                        <!-- All fixtures will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Predictions Section -->
+            <section id="predictions" class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title">Fixture Predictions</h2>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Make Predictions</h3>
+                        <div class="prediction-points">
+                            <i class="fas fa-star"></i> Prediction Points: <span id="prediction-points">125</span>
+                        </div>
+                    </div>
+                    
+                    <div class="prediction-stats">
+                        <div class="prediction-stat-item">
+                            <div class="prediction-stat-value" id="total-predictions">12</div>
+                            <div class="prediction-stat-label">Total Predictions</div>
+                        </div>
+                        <div class="prediction-stat-item">
+                            <div class="prediction-stat-value" id="correct-predictions">8</div>
+                            <div class="prediction-stat-label">Correct</div>
+                        </div>
+                        <div class="prediction-stat-item">
+                            <div class="prediction-stat-value" id="accuracy-rate">67%</div>
+                            <div class="prediction-stat-label">Accuracy</div>
+                        </div>
+                        <div class="prediction-stat-item">
+                            <div class="prediction-stat-value" id="leaderboard-rank">5</div>
+                            <div class="prediction-stat-label">Leaderboard Rank</div>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 20px 0; color: var(--primary);">Upcoming Matches to Predict</h3>
+                    
+                    <div id="predictions-container">
+                        <!-- Prediction cards will be generated here -->
+                    </div>
+                </div>
+                
+                <!-- Prediction Leaderboard -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Prediction Leaderboard</h3>
+                        <button class="btn btn-primary btn-sm btn-motion" id="refresh-leaderboard">Refresh</button>
+                    </div>
+                    
+                    <div class="leaderboard" id="prediction-leaderboard">
+                        <!-- Leaderboard items will be generated here -->
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Standings Section -->
+            <section id="standings" class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title">League Standings</h2>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Premier League Tournament 2024</h3>
+                        <div>
+                            <button class="btn btn-primary btn-motion" id="view-full-table">Full Table</button>
+                            <button class="btn btn-secondary btn-motion" id="view-group-stage">Group Stage</button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table id="standings-table">
+                            <thead>
+                                <tr>
+                                    <th>Pos</th>
+                                    <th>Team</th>
+                                    <th>P</th>
+                                    <th>W</th>
+                                    <th>D</th>
+                                    <th>L</th>
+                                    <th>GF</th>
+                                    <th>GA</th>
+                                    <th>GD</th>
+                                    <th>Pts</th>
+                                    <th>Form</th>
+                                </tr>
+                            </thead>
+                            <tbody id="standings-table-body">
+                                <!-- Standings rows will be generated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Brackets Section -->
+            <section id="brackets" class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title">Tournament Brackets</h2>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Champions League Knockout Stage</h3>
+                        <button class="btn btn-primary btn-motion" id="update-bracket">Update Bracket</button>
+                    </div>
+                    
+                    <div class="bracket-container">
+                        <div class="bracket" id="bracket-visualization">
+                            <!-- Bracket visualization will be generated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Profile Section -->
+            <section id="profile" class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title">Player Profile</h2>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title" id="profile-user-name">Admin User Profile</h3>
+                        <button class="btn btn-primary btn-motion" id="edit-profile">Edit Profile</button>
+                    </div>
+                    
+                    <div class="player-stats">
+                        <div class="stat-card">
+                            <div class="stat-label">Tournaments Joined</div>
+                            <div class="stat-value">12</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Matches Played</div>
+                            <div class="stat-value">48</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Wins</div>
+                            <div class="stat-value">32</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Goals Scored</div>
+                            <div class="stat-value">86</div>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin-top: 30px; color: var(--primary);">Recent Match History</h3>
+                    <div class="table-responsive" style="margin-top: 20px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Tournament</th>
+                                    <th>Opponent</th>
+                                    <th>Result</th>
+                                    <th>Score</th>
+                                    <th>Performance</th>
+                                </tr>
+                            </thead>
+                            <tbody id="player-match-history">
+                                <!-- Player match history will be generated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Coach Section -->
+            <section id="coach" class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title">Coach Section</h2>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Player Registration & Management</h3>
+                        <span class="admin-only">COACH</span>
+                    </div>
+                    
+                    <div class="coach-section">
+                        <!-- Invite Link Generator -->
+                        <div class="invite-link-box">
+                            <h3 style="color: var(--accent); margin-bottom: 15px;">
+                                <i class="fas fa-link"></i> Generate Player Invite Link
+                            </h3>
+                            <p style="color: #aaa; margin-bottom: 15px;">Generate unique invite links for new players to join tournaments</p>
+                            
+                            <div class="invite-link">
+                                <input type="text" id="invite-link-input" readonly value="https://efootball-showdown.com/join/INVITE-CODE">
+                                <button class="btn btn-accent btn-motion" id="generate-invite-btn">
+                                    <i class="fas fa-key"></i> Generate Link
+                                </button>
+                                <button class="btn btn-primary btn-motion" id="copy-invite-btn">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                            </div>
+                            
+                            <div style="margin-top: 20px; display: flex; gap: 15px;">
+                                <button class="btn btn-secondary btn-motion" id="email-invite-btn">
+                                    <i class="fas fa-envelope"></i> Email Invite
+                                </button>
+                                <button class="btn btn-info btn-motion" id="whatsapp-invite-btn">
+                                    <i class="fab fa-whatsapp"></i> WhatsApp Invite
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Player Registration Form -->
+                        <div class="registration-form">
+                            <h3 style="color: var(--primary); margin-bottom: 20px;">
+                                <i class="fas fa-user-plus"></i> Register New Player
+                            </h3>
+                            
+                            <form id="player-registration-form">
+                                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                                    <div class="form-group">
+                                        <label for="player-name">Full Name</label>
+                                        <input type="text" id="player-name" placeholder="Enter player's full name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="player-email">Email Address</label>
+                                        <input type="email" id="player-email" placeholder="Enter player's email" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                                    <div class="form-group">
+                                        <label for="player-username">Username</label>
+                                        <input type="text" id="player-username" placeholder="Choose a username" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="player-team">Assign Team</label>
+                                        <select id="player-team" required>
+                                            <option value="">Select a team</option>
+                                            <option value="Cyber Warriors">Cyber Warriors</option>
+                                            <option value="Neon Strikers">Neon Strikers</option>
+                                            <option value="Quantum FC">Quantum FC</option>
+                                            <option value="Vector United">Vector United</option>
+                                            <option value="Pixel Dynamo">Pixel Dynamo</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="player-tournaments">Tournaments to Join</label>
+                                    <select id="player-tournaments" multiple style="height: 120px;">
+                                        <option value="1">Premier League Tournament 2024</option>
+                                        <option value="2">Champions League 2024</option>
+                                        <option value="3">World Cup Showdown</option>
+                                    </select>
+                                    <div style="font-size: 0.9rem; color: #aaa; margin-top: 5px;">Hold Ctrl/Cmd to select multiple tournaments</div>
+                                </div>
+                                
+                                <div style="display: flex; gap: 15px; margin-top: 30px;">
+                                    <button type="submit" class="btn btn-primary btn-motion" style="flex: 1;">
+                                        <i class="fas fa-user-check"></i> Register Player
+                                    </button>
+                                    <button type="button" class="btn btn-secondary btn-motion" id="clear-player-form" style="flex: 1;">Clear Form</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Registered Players Table -->
+                        <div style="margin-top: 40px;">
+                            <h3 style="color: var(--primary); margin-bottom: 20px;">
+                                <i class="fas fa-users"></i> Registered Players
+                            </h3>
+                            
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Username</th>
+                                            <th>Team</th>
+                                            <th>Tournaments</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="players-table">
+                                        <!-- Players will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Admin Panel Section -->
+            <section id="admin" class="dashboard-section protected-section">
+                <div class="password-overlay" id="admin-password-overlay">
+                    <div class="password-form">
+                        <h3><i class="fas fa-shield-alt"></i> Admin Authentication</h3>
+                        <p style="text-align: center; margin-bottom: 20px; color: #aaa;">Enter admin password to access control panel</p>
+                        <div class="form-group">
+                            <label for="admin-password">Admin Password</label>
+                            <input type="password" id="admin-password" placeholder="Enter admin password">
+                            <div style="font-size: 0.9rem; color: #aaa; margin-top: 5px;">Default: Perez@254</div>
+                        </div>
+                        <button class="btn btn-primary btn-motion" id="unlock-admin" style="width: 100%;">
+                            <i class="fas fa-unlock-alt"></i> Unlock Admin Panel
+                        </button>
+                        <div style="text-align: center; margin-top: 20px;">
+                            <button class="btn btn-accent btn-sm" id="change-admin-password">
+                                <i class="fas fa-key"></i> Change Admin Password
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Admin Control Panel</h3>
+                        <button class="btn btn-secondary btn-motion" id="lock-admin-panel">
+                            <i class="fas fa-lock"></i> Lock Panel
+                        </button>
+                    </div>
+                    
+                    <div class="admin-controls">
+                        <button class="btn btn-primary btn-motion" id="manage-users-btn">
+                            <i class="fas fa-user-cog"></i> Manage Users
+                        </button>
+                        <button class="btn btn-secondary btn-motion" id="manage-roles-btn">
+                            <i class="fas fa-user-tag"></i> Manage Roles
+                        </button>
+                        <button class="btn btn-accent btn-motion" id="tournament-visibility-btn">
+                            <i class="fas fa-eye"></i> Tournament Visibility
+                        </button>
+                        <button class="btn btn-primary btn-motion" id="invite-players-btn">
+                            <i class="fas fa-envelope"></i> Invite Players
+                        </button>
+                        <button class="btn btn-secondary btn-motion" id="system-settings-btn">
+                            <i class="fas fa-cog"></i> System Settings
+                        </button>
+                    </div>
+                    
+                    <!-- Admin Update Form (Visible to Users) -->
+                    <div class="admin-update-form">
+                        <h3><i class="fas fa-bullhorn"></i> Send Update to All Players</h3>
+                        <form id="admin-update-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="update-title">Update Title</label>
+                                    <input type="text" id="update-title" placeholder="Enter update title" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="update-type">Update Type</label>
+                                    <select id="update-type" required>
+                                        <option value="info">Information</option>
+                                        <option value="warning">Warning</option>
+                                        <option value="success">Success</option>
+                                        <option value="fixture">Fixture Change</option>
+                                        <option value="result">Result Update</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="update-message">Update Message</label>
+                                <textarea id="update-message" rows="4" placeholder="Enter message that will be visible to all players" required></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="update-tournament">Related Tournament (Optional)</label>
+                                <select id="update-tournament">
+                                    <option value="">Select tournament</option>
+                                    <option value="1">Premier League Tournament 2024</option>
+                                    <option value="2">Champions League 2024</option>
+                                    <option value="3">World Cup Showdown</option>
+                                </select>
+                            </div>
+                            
+                            <div style="display: flex; gap: 15px; margin-top: 20px;">
+                                <button type="submit" class="btn btn-primary btn-motion" style="flex: 1;">
+                                    <i class="fas fa-paper-plane"></i> Send Update to All Players
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-motion" id="clear-update-form" style="flex: 1;">Clear Form</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div style="margin-top: 30px;">
+                        <h3 style="color: var(--primary); margin-bottom: 20px;">Recent Admin Actions</h3>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Action</th>
+                                        <th>User</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-actions-log">
+                                    <!-- Admin actions log will be generated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div class="notification-title">
+            <i class="fas fa-sync-alt"></i>
+            <span id="notification-title">Live Update</span>
+        </div>
+        <div id="notification-message">Match results have been updated</div>
+    </div>
+    
+    <!-- Modals -->
+    <div class="modal" id="create-tournament-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-create-tournament">&times;</button>
+            <h2 class="section-title" style="margin-bottom: 30px;">Create New Tournament</h2>
+            
+            <form id="tournament-form">
+                <div class="form-group">
+                    <label for="tournament-name">Tournament Name</label>
+                    <input type="text" id="tournament-name" placeholder="Enter tournament name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tournament-type">Tournament Type</label>
+                    <select id="tournament-type" required>
+                        <option value="">Select tournament type</option>
+                        <option value="league">League Tournament (EPL Style)</option>
+                        <option value="champions">Champions League (New Format)</option>
+                        <option value="worldcup">World Cup Style</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="team-count">Number of Teams</label>
+                    <input type="number" id="team-count" min="4" max="32" value="8" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="start-date">Start Date</label>
+                    <input type="date" id="start-date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="visibility">Visibility</label>
+                    <select id="visibility">
+                        <option value="public">Public (Visible to all players)</option>
+                        <option value="private">Private (Invite only)</option>
+                    </select>
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-top: 30px;">
+                    <button type="submit" class="btn btn-primary btn-motion" style="flex: 1;">Create Tournament</button>
+                    <button type="button" class="btn btn-secondary btn-motion" id="cancel-create-tournament" style="flex: 1;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Update Results Modal -->
+    <div class="modal" id="update-results-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-update-results">&times;</button>
+            <h2 class="section-title" style="margin-bottom: 30px;">Update Match Results</h2>
+            
+            <form id="results-form">
+                <div class="form-group">
+                    <label for="select-match">Select Match</label>
+                    <select id="select-match" required>
+                        <option value="">Select a match to update</option>
+                        <!-- Match options will be populated here -->
+                    </select>
+                </div>
+                
+                <div style="display: flex; align-items: center; justify-content: center; gap: 30px; margin: 30px 0;">
+                    <div class="team" style="flex: 1;">
+                        <div class="team-logo" id="home-team-logo">H</div>
+                        <div class="team-name" id="home-team-name">Home Team</div>
+                        <input type="number" id="home-score" min="0" max="20" value="0" style="width: 80px; margin-top: 15px; text-align: center;">
+                    </div>
+                    
+                    <div class="vs">VS</div>
+                    
+                    <div class="team" style="flex: 1;">
+                        <div class="team-logo" id="away-team-logo">A</div>
+                        <div class="team-name" id="away-team-name">Away Team</div>
+                        <input type="number" id="away-score" min="0" max="20" value="0" style="width: 80px; margin-top: 15px; text-align: center;">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="match-status">Match Status</label>
+                    <select id="match-status">
+                        <option value="scheduled">Scheduled</option>
+                        <option value="live">Live</option>
+                        <option value="completed">Completed</option>
+                        <option value="postponed">Postponed</option>
+                    </select>
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-top: 30px;">
+                    <button type="submit" class="btn btn-primary btn-motion" style="flex: 1;">Update Result</button>
+                    <button type="button" class="btn btn-secondary btn-motion" id="cancel-update-results" style="flex: 1;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Prediction Modal -->
+    <div class="modal" id="prediction-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-prediction-modal">&times;</button>
+            <h2 class="section-title" style="margin-bottom: 30px;">Make Prediction</h2>
+            
+            <form id="prediction-form">
+                <div class="form-group">
+                    <label for="prediction-match">Select Match</label>
+                    <select id="prediction-match" required>
+                        <option value="">Select a match to predict</option>
+                    </select>
+                </div>
+                
+                <div style="display: flex; align-items: center; justify-content: center; gap: 30px; margin: 30px 0;">
+                    <div class="team" style="flex: 1;">
+                        <div class="team-logo" id="prediction-home-logo">H</div>
+                        <div class="team-name" id="prediction-home-name">Home Team</div>
+                        <input type="number" id="prediction-home-score" min="0" max="10" value="0" class="prediction-input" required>
+                    </div>
+                    
+                    <div class="vs">VS</div>
+                    
+                    <div class="team" style="flex: 1;">
+                        <div class="team-logo" id="prediction-away-logo">A</div>
+                        <div class="team-name" id="prediction-away-name">Away Team</div>
+                        <input type="number" id="prediction-away-score" min="0" max="10" value="0" class="prediction-input" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="prediction-confidence">Confidence Level</label>
+                    <select id="prediction-confidence">
+                        <option value="low">Low Confidence (1x points)</option>
+                        <option value="medium" selected>Medium Confidence (2x points)</option>
+                        <option value="high">High Confidence (3x points)</option>
+                    </select>
+                </div>
+                
+                <div id="prediction-points-preview" style="text-align: center; margin: 20px 0; padding: 15px; background: rgba(157, 78, 221, 0.1); border-radius: 8px;">
+                    <div style="color: var(--accent); font-weight: 600;">Potential Points: <span id="points-value">10</span></div>
+                    <div style="font-size: 0.9rem; color: #aaa; margin-top: 5px;">Correct score: 10 points, Correct outcome: 5 points</div>
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-top: 30px;">
+                    <button type="submit" class="btn btn-accent btn-motion" style="flex: 1;">
+                        <i class="fas fa-crystal-ball"></i> Submit Prediction
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-motion" id="cancel-prediction" style="flex: 1;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Change Admin Password Modal -->
+    <div class="modal" id="change-password-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-change-password">&times;</button>
+            <h2 class="section-title" style="margin-bottom: 30px;">Change Admin Password</h2>
+            
+            <form id="change-password-form">
+                <div class="form-group">
+                    <label for="current-password">Current Password</label>
+                    <input type="password" id="current-password" placeholder="Enter current password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="new-password">New Password</label>
+                    <input type="password" id="new-password" placeholder="Enter new password" required>
+                    <div style="font-size: 0.9rem; color: #aaa; margin-top: 5px;">Must be at least 8 characters with letters and numbers</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirm-password">Confirm New Password</label>
+                    <input type="password" id="confirm-password" placeholder="Confirm new password" required>
+                </div>
+                
+                <div id="password-strength" style="margin: 20px 0; padding: 15px; background: rgba(30, 30, 50, 0.5); border-radius: 8px; display: none;">
+                    <div style="font-weight: 600; color: var(--primary); margin-bottom: 10px;">Password Strength: <span id="strength-text">Weak</span></div>
+                    <div style="height: 5px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; overflow: hidden;">
+                        <div id="strength-bar" style="height: 100%; width: 20%; background: var(--secondary); transition: all 0.3s ease;"></div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-top: 30px;">
+                    <button type="submit" class="btn btn-primary btn-motion" style="flex: 1;">
+                        <i class="fas fa-key"></i> Change Password
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-motion" id="cancel-change-password" style="flex: 1;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Create Fixture Modal -->
+    <div class="modal" id="create-fixture-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-create-fixture">&times;</button>
+            <h2 class="section-title" style="margin-bottom: 30px;">Create New Fixture</h2>
+            
+            <form id="create-fixture-form">
+                <div class="form-group">
+                    <label for="fixture-tournament">Select Tournament</label>
+                    <select id="fixture-tournament" required>
+                        <option value="">Select tournament</option>
+                        <option value="1">Premier League Tournament 2024</option>
+                        <option value="2">Champions League 2024</option>
+                        <option value="3">World Cup Showdown</option>
+                    </select>
+                </div>
+                
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                    <div class="form-group">
+                        <label for="fixture-home-team">Home Team</label>
+                        <select id="fixture-home-team" required>
+                            <option value="">Select home team</option>
+                            <option value="Cyber Warriors">Cyber Warriors</option>
+                            <option value="Neon Strikers">Neon Strikers</option>
+                            <option value="Quantum FC">Quantum FC</option>
+                            <option value="Vector United">Vector United</option>
+                            <option value="Pixel Dynamo">Pixel Dynamo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="fixture-away-team">Away Team</label>
+                        <select id="fixture-away-team" required>
+                            <option value="">Select away team</option>
+                            <option value="Cyber Warriors">Cyber Warriors</option>
+                            <option value="Neon Strikers">Neon Strikers</option>
+                            <option value="Quantum FC">Quantum FC</option>
+                            <option value="Vector United">Vector United</option>
+                            <option value="Pixel Dynamo">Pixel Dynamo</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                    <div class="form-group">
+                        <label for="fixture-date">Match Date</label>
+                        <input type="date" id="fixture-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fixture-time">Match Time</label>
+                        <input type="time" id="fixture-time" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fixture-round">Round/Matchday</label>
+                    <input type="text" id="fixture-round" placeholder="e.g., Matchday 1, Quarterfinal, etc." required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fixture-venue">Venue (Optional)</label>
+                    <input type="text" id="fixture-venue" placeholder="Enter match venue">
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-top: 30px;">
+                    <button type="submit" class="btn btn-primary btn-motion" style="flex: 1;">Create Fixture</button>
+                    <button type="button" class="btn btn-secondary btn-motion" id="cancel-create-fixture" style="flex: 1;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Application State with Admin Password Encryption
+        const state = {
+            currentUser: {
+                id: 1,
+                name: "Admin User",
+                role: "admin",
+                avatar: "AD",
+                team: "Cyber Warriors",
+                predictionPoints: 125
+            },
+            adminPassword: "Perez@254", // Default admin password
+            isAdminAuthenticated: true, // Start as authenticated for demo
+            adminPanelLocked: false,
+            fixturesLocked: true,
+            tournaments: [
+                {
+                    id: 1,
+                    name: "Premier League Tournament 2024",
+                    type: "league",
+                    teams: 20,
+                    startDate: "2024-08-15",
+                    status: "active",
+                    description: "EPL style league tournament with home and away fixtures"
+                },
+                {
+                    id: 2,
+                    name: "Champions League 2024",
+                    type: "champions",
+                    teams: 32,
+                    startDate: "2024-09-10",
+                    status: "upcoming",
+                    description: "New format Champions League with league phase and knockout rounds"
+                },
+                {
+                    id: 3,
+                    name: "World Cup Showdown",
+                    type: "worldcup",
+                    teams: 16,
+                    startDate: "2024-06-01",
+                    status: "completed",
+                    description: "World Cup style tournament with group stage and knockout"
+                }
+            ],
+            matches: [
+                {
+                    id: 1,
+                    homeTeam: "Cyber Warriors",
+                    awayTeam: "Neon Strikers",
+                    homeScore: 3,
+                    awayScore: 1,
+                    date: "2024-05-15",
+                    round: "Matchday 5",
+                    status: "completed",
+                    tournament: "Premier League Tournament 2024",
+                    predictions: [
+                        { userId: 1, homeScore: 2, awayScore: 1, points: 5 },
+                        { userId: 2, homeScore: 3, awayScore: 0, points: 10 },
+                        { userId: 3, homeScore: 1, awayScore: 1, points: 0 }
+                    ]
+                },
+                {
+                    id: 2,
+                    homeTeam: "Quantum FC",
+                    awayTeam: "Vector United",
+                    homeScore: null,
+                    awayScore: null,
+                    date: "2024-05-20",
+                    round: "Matchday 6",
+                    status: "scheduled",
+                    tournament: "Premier League Tournament 2024",
+                    predictions: []
+                },
+                {
+                    id: 3,
+                    homeTeam: "Pixel Dynamo",
+                    awayTeam: "Matrix City",
+                    homeScore: 2,
+                    awayScore: 2,
+                    date: "2024-05-10",
+                    round: "Matchday 4",
+                    status: "completed",
+                    tournament: "Premier League Tournament 2024",
+                    predictions: [
+                        { userId: 1, homeScore: 1, awayScore: 1, points: 5 },
+                        { userId: 2, homeScore: 2, awayScore: 1, points: 0 }
+                    ]
+                },
+                {
+                    id: 4,
+                    homeTeam: "Glitch FC",
+                    awayTeam: "Binary FC",
+                    homeScore: null,
+                    awayScore: null,
+                    date: "2024-05-22",
+                    round: "Matchday 7",
+                    status: "scheduled",
+                    tournament: "Premier League Tournament 2024",
+                    predictions: []
+                },
+                {
+                    id: 5,
+                    homeTeam: "Syntax United",
+                    awayTeam: "Algorithm City",
+                    homeScore: null,
+                    awayScore: null,
+                    date: "2024-05-25",
+                    round: "Matchday 7",
+                    status: "scheduled",
+                    tournament: "Premier League Tournament 2024",
+                    predictions: []
+                }
+            ],
+            standings: [
+                { position: 1, team: "Cyber Warriors", played: 5, wins: 4, draws: 1, losses: 0, goalsFor: 12, goalsAgainst: 4, goalDifference: 8, points: 13, qualified: true, form: ['W', 'W', 'D', 'W', 'W'] },
+                { position: 2, team: "Neon Strikers", played: 5, wins: 3, draws: 1, losses: 1, goalsFor: 10, goalsAgainst: 6, goalDifference: 4, points: 10, qualified: true, form: ['W', 'L', 'W', 'D', 'W'] },
+                { position: 3, team: "Quantum FC", played: 5, wins: 3, draws: 0, losses: 2, goalsFor: 8, goalsAgainst: 7, goalDifference: 1, points: 9, qualified: false, form: ['W', 'L', 'W', 'W', 'L'] },
+                { position: 4, team: "Vector United", played: 5, wins: 2, draws: 2, losses: 1, goalsFor: 7, goalsAgainst: 6, goalDifference: 1, points: 8, qualified: false, form: ['D', 'W', 'D', 'L', 'W'] },
+                { position: 5, team: "Pixel Dynamo", played: 5, wins: 2, draws: 1, losses: 2, goalsFor: 6, goalsAgainst: 7, goalDifference: -1, points: 7, qualified: false, form: ['L', 'W', 'D', 'L', 'W'] }
+            ],
+            bracketMatches: [
+                { round: "Round of 16", match: 1, team1: "Cyber Warriors", team2: "Glitch FC", score1: 3, score2: 1 },
+                { round: "Round of 16", match: 2, team1: "Neon Strikers", team2: "Binary FC", score1: 2, score2: 0 },
+                { round: "Quarterfinals", match: 1, team1: "Cyber Warriors", team2: "Neon Strikers", score1: null, score2: null },
+                { round: "Semifinals", match: 1, team1: null, team2: null, score1: null, score2: null },
+                { round: "Final", match: 1, team1: null, team2: null, score1: null, score2: null }
+            ],
+            adminActions: [
+                { time: "10:30 AM", action: "Updated match results", user: "Admin User", details: "Cyber Warriors 3-1 Neon Strikers" },
+                { time: "09:15 AM", action: "Created new tournament", user: "Admin User", details: "World Cup Showdown" },
+                { time: "Yesterday, 4:45 PM", action: "Added new teams", user: "Admin User", details: "Added 4 new teams to Premier League" },
+                { time: "Yesterday, 2:20 PM", action: "Generated fixtures", user: "Admin User", details: "Generated fixtures for Champions League" }
+            ],
+            updates: [
+                { id: 1, type: "info", title: "Fixture Schedule Updated", message: "Matchday 7 fixtures have been rescheduled due to venue availability", time: "2 hours ago", tournament: "Premier League Tournament 2024" },
+                { id: 2, type: "result", title: "Match Results Updated", message: "Cyber Warriors vs Neon Strikers result has been updated to 3-1", time: "3 hours ago", tournament: "Premier League Tournament 2024" },
+                { id: 3, type: "warning", title: "Upcoming Match Reminder", message: "Quarterfinals matches start this weekend. Check the brackets for matchups.", time: "1 day ago", tournament: "Champions League 2024" },
+                { id: 4, type: "success", title: "New Tournament Created", message: "World Cup Showdown tournament is now open for registrations", time: "2 days ago", tournament: "World Cup Showdown" }
+            ],
+            predictions: [
+                { id: 1, userId: 1, matchId: 2, homeScore: 2, awayScore: 0, confidence: "medium", submittedAt: "2024-05-18", points: null },
+                { id: 2, userId: 1, matchId: 4, homeScore: 1, awayScore: 1, confidence: "low", submittedAt: "2024-05-19", points: null },
+                { id: 3, userId: 1, matchId: 5, homeScore: 3, awayScore: 1, confidence: "high", submittedAt: "2024-05-19", points: null }
+            ],
+            predictionLeaderboard: [
+                { id: 1, name: "Alex Predictor", points: 185, avatar: "AP", correctPredictions: 15 },
+                { id: 2, name: "Bet Master", points: 167, avatar: "BM", correctPredictions: 13 },
+                { id: 3, name: "Crystal Ball", points: 152, avatar: "CB", correctPredictions: 12 },
+                { id: 4, name: "Future Seer", points: 138, avatar: "FS", correctPredictions: 11 },
+                { id: 5, name: "Admin User", points: 125, avatar: "AD", correctPredictions: 10 },
+                { id: 6, name: "Goal Guru", points: 112, avatar: "GG", correctPredictions: 9 },
+                { id: 7, name: "Match Prophet", points: 98, avatar: "MP", correctPredictions: 8 }
+            ],
+            registeredPlayers: [
+                { id: 1, name: "John Smith", username: "john_s", email: "john@example.com", team: "Cyber Warriors", tournaments: [1], status: "active", joinDate: "2024-05-01" },
+                { id: 2, name: "Sarah Johnson", username: "sarah_j", email: "sarah@example.com", team: "Neon Strikers", tournaments: [1, 2], status: "active", joinDate: "2024-05-05" },
+                { id: 3, name: "Mike Wilson", username: "mike_w", email: "mike@example.com", team: "Quantum FC", tournaments: [1], status: "active", joinDate: "2024-05-10" }
+            ]
+        };
+
+        // DOM Elements
+        const navLinks = document.querySelectorAll('.nav-links a');
+        const dashboardSections = document.querySelectorAll('.dashboard-section');
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const adminControls = document.getElementById('admin-controls');
+        const tournamentGrid = document.getElementById('tournament-grid');
+        const matchesContainer = document.getElementById('upcoming-matches-container');
+        const liveMatchesContainer = document.getElementById('live-matches-container');
+        const completedMatchesContainer = document.getElementById('completed-matches-container');
+        const myMatchesContainer = document.getElementById('my-matches-container');
+        const standingsTableBody = document.getElementById('standings-table-body');
+        const bracketVisualization = document.getElementById('bracket-visualization');
+        const createTournamentModal = document.getElementById('create-tournament-modal');
+        const updateResultsModal = document.getElementById('update-results-modal');
+        const predictionModal = document.getElementById('prediction-modal');
+        const changePasswordModal = document.getElementById('change-password-modal');
+        const createFixtureModal = document.getElementById('create-fixture-modal');
+        const notification = document.getElementById('notification');
+        const tournamentForm = document.getElementById('tournament-form');
+        const resultsForm = document.getElementById('results-form');
+        const predictionForm = document.getElementById('prediction-form');
+        const changePasswordForm = document.getElementById('change-password-form');
+        const createFixtureForm = document.getElementById('create-fixture-form');
+        const adminUpdateForm = document.getElementById('admin-update-form');
+        const playerRegistrationForm = document.getElementById('player-registration-form');
+        const selectMatch = document.getElementById('select-match');
+        const homeTeamName = document.getElementById('home-team-name');
+        const awayTeamName = document.getElementById('away-team-name');
+        const homeTeamLogo = document.getElementById('home-team-logo');
+        const awayTeamLogo = document.getElementById('away-team-logo');
+        const updatesFeed = document.getElementById('updates-feed');
+        const predictionsContainer = document.getElementById('predictions-container');
+        const predictionLeaderboard = document.getElementById('prediction-leaderboard');
+        const predictionPoints = document.getElementById('prediction-points');
+        const totalPredictions = document.getElementById('total-predictions');
+        const correctPredictions = document.getElementById('correct-predictions');
+        const accuracyRate = document.getElementById('accuracy-rate');
+        const leaderboardRank = document.getElementById('leaderboard-rank');
+        const adminPasswordOverlay = document.getElementById('admin-password-overlay');
+        const fixturesPasswordOverlay = document.getElementById('fixtures-password-overlay');
+        const userAvatar = document.getElementById('user-avatar');
+        const userName = document.getElementById('user-name');
+        const roleBadge = document.getElementById('role-badge');
+        const profileUserName = document.getElementById('profile-user-name');
+        const playersTable = document.getElementById('players-table');
+        const allFixturesTable = document.getElementById('all-fixtures-table');
+
+        // Simple password encryption (for demo purposes)
+        function encryptPassword(password) {
+            // In a real app, you would use proper encryption like bcrypt
+            // This is just for demonstration
+            return btoa(password).split('').reverse().join('');
+        }
+
+        function verifyPassword(inputPassword, storedPassword) {
+            // For demo, we'll compare plain text
+            // In production, you would compare encrypted/hashed passwords
+            return inputPassword === storedPassword;
+        }
+
+        // Check if user is admin
+        function isAdmin() {
+            return state.currentUser.role === 'admin' && state.isAdminAuthenticated;
+        }
+
+        // Initialize the application
+        function init() {
+            // Set current date for start date input
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('start-date').value = today;
+            document.getElementById('fixture-date').value = today;
+            
+            // Set current time + 1 hour for fixture time
+            const now = new Date();
+            now.setHours(now.getHours() + 1);
+            const timeString = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('fixture-time').value = timeString;
+            
+            // Initialize admin authentication state
+            if (!state.isAdminAuthenticated) {
+                adminPasswordOverlay.style.display = 'flex';
+            }
+            
+            if (state.fixturesLocked) {
+                fixturesPasswordOverlay.style.display = 'flex';
+            }
+            
+            // Render initial data
+            renderTournamentCards();
+            renderMatches();
+            renderLiveMatches();
+            renderCompletedMatches();
+            renderMyMatches();
+            renderStandings();
+            renderBracket();
+            renderAdminActions();
+            renderUpdates();
+            renderPredictions();
+            renderPredictionLeaderboard();
+            renderRegisteredPlayers();
+            renderAllFixtures();
+            updatePredictionStats();
+            populateMatchSelect();
+            populatePredictionMatchSelect();
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Simulate live updates
+            simulateLiveUpdates();
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Navigation
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sectionId = this.getAttribute('data-section');
+                    
+                    // Check admin access for admin panel
+                    if (sectionId === 'admin' && !isAdmin()) {
+                        adminPasswordOverlay.style.display = 'flex';
+                        return;
+                    }
+                    
+                    // Check admin access for fixtures tab
+                    if (sectionId === 'matches') {
+                        // Ensure fixtures tab is locked if not admin
+                        setTimeout(() => {
+                            if (state.fixturesLocked && document.querySelector('[data-tab="fixtures"]').classList.contains('active')) {
+                                fixturesPasswordOverlay.style.display = 'flex';
+                            }
+                        }, 100);
+                    }
+                    
+                    // Update active nav link
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show selected section
+                    dashboardSections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === sectionId) {
+                            section.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Tabs
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Check if trying to access fixtures tab without admin access
+                    if (tabId === 'fixtures' && state.fixturesLocked) {
+                        fixturesPasswordOverlay.style.display = 'flex';
+                        return;
+                    }
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show selected tab content
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${tabId}-matches` || content.id === `${tabId}-tab`) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Modal open/close
+            document.getElementById('create-tournament-btn').addEventListener('click', () => {
+                if (!isAdmin()) {
+                    showNotification('Admin Access Required', 'Only administrators can create tournaments');
+                    return;
+                }
+                createTournamentModal.classList.add('active');
+            });
+            
+            document.getElementById('update-results-btn').addEventListener('click', () => {
+                if (!isAdmin()) {
+                    showNotification('Admin Access Required', 'Only administrators can update match results');
+                    return;
+                }
+                updateResultsModal.classList.add('active');
+            });
+            
+            document.getElementById('admin-update-btn').addEventListener('click', () => {
+                if (!isAdmin()) {
+                    showNotification('Admin Access Required', 'Only administrators can send updates');
+                    return;
+                }
+                // Scroll to admin update form
+                document.getElementById('admin').classList.add('active');
+                navLinks.forEach(l => l.classList.remove('active'));
+                document.querySelector('[data-section="admin"]').classList.add('active');
+                dashboardSections.forEach(section => section.classList.remove('active'));
+                document.getElementById('admin').classList.add('active');
+            });
+            
+            document.getElementById('generate-fixtures-btn').addEventListener('click', () => {
+                if (!isAdmin()) {
+                    showNotification('Admin Access Required', 'Only administrators can generate fixtures');
+                    return;
+                }
+                generateFixtures();
+            });
+            
+            document.getElementById('create-fixture-btn').addEventListener('click', () => {
+                if (!isAdmin()) {
+                    showNotification('Admin Access Required', 'Only administrators can create fixtures');
+                    return;
+                }
+                createFixtureModal.classList.add('active');
+            });
+            
+            // Open prediction modal from prediction section
+            document.getElementById('predictions').addEventListener('click', function(e) {
+                if (e.target.classList.contains('btn-predict')) {
+                    const matchId = parseInt(e.target.getAttribute('data-match-id'));
+                    const match = state.matches.find(m => m.id === matchId);
+                    if (match) {
+                        openPredictionModal(match);
+                    }
+                }
+            });
+            
+            // Close modals
+            document.getElementById('close-create-tournament').addEventListener('click', () => {
+                createTournamentModal.classList.remove('active');
+            });
+            
+            document.getElementById('close-update-results').addEventListener('click', () => {
+                updateResultsModal.classList.remove('active');
+            });
+            
+            document.getElementById('close-prediction-modal').addEventListener('click', () => {
+                predictionModal.classList.remove('active');
+            });
+            
+            document.getElementById('close-change-password').addEventListener('click', () => {
+                changePasswordModal.classList.remove('active');
+            });
+            
+            document.getElementById('close-create-fixture').addEventListener('click', () => {
+                createFixtureModal.classList.remove('active');
+            });
+            
+            document.getElementById('cancel-create-tournament').addEventListener('click', () => {
+                createTournamentModal.classList.remove('active');
+            });
+            
+            document.getElementById('cancel-update-results').addEventListener('click', () => {
+                updateResultsModal.classList.remove('active');
+            });
+            
+            document.getElementById('cancel-prediction').addEventListener('click', () => {
+                predictionModal.classList.remove('active');
+            });
+            
+            document.getElementById('cancel-change-password').addEventListener('click', () => {
+                changePasswordModal.classList.remove('active');
+            });
+            
+            document.getElementById('cancel-create-fixture').addEventListener('click', () => {
+                createFixtureModal.classList.remove('active');
+            });
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === createTournamentModal) {
+                    createTournamentModal.classList.remove('active');
+                }
+                if (e.target === updateResultsModal) {
+                    updateResultsModal.classList.remove('active');
+                }
+                if (e.target === predictionModal) {
+                    predictionModal.classList.remove('active');
+                }
+                if (e.target === changePasswordModal) {
+                    changePasswordModal.classList.remove('active');
+                }
+                if (e.target === createFixtureModal) {
+                    createFixtureModal.classList.remove('active');
+                }
+            });
+            
+            // Admin authentication
+            document.getElementById('unlock-admin').addEventListener('click', unlockAdminPanel);
+            document.getElementById('unlock-fixtures').addEventListener('click', unlockFixtures);
+            document.getElementById('lock-admin-panel').addEventListener('click', lockAdminPanel);
+            document.getElementById('change-admin-password').addEventListener('click', () => {
+                changePasswordModal.classList.add('active');
+            });
+            
+            // Admin password input enter key
+            document.getElementById('admin-password').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    unlockAdminPanel();
+                }
+            });
+            
+            document.getElementById('fixtures-password').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    unlockFixtures();
+                }
+            });
+            
+            // Form submissions
+            tournamentForm.addEventListener('submit', handleCreateTournament);
+            resultsForm.addEventListener('submit', handleUpdateResults);
+            predictionForm.addEventListener('submit', handlePredictionSubmit);
+            changePasswordForm.addEventListener('submit', handleChangePassword);
+            createFixtureForm.addEventListener('submit', handleCreateFixture);
+            adminUpdateForm.addEventListener('submit', handleAdminUpdate);
+            playerRegistrationForm.addEventListener('submit', handlePlayerRegistration);
+            
+            // Match selection change
+            selectMatch.addEventListener('change', handleMatchSelectChange);
+            
+            // Prediction match selection change
+            document.getElementById('prediction-match').addEventListener('change', handlePredictionMatchSelectChange);
+            
+            // Prediction confidence change
+            document.getElementById('prediction-confidence').addEventListener('change', updatePredictionPointsPreview);
+            
+            // Password strength checker
+            document.getElementById('new-password').addEventListener('input', checkPasswordStrength);
+            
+            // Admin control buttons
+            document.getElementById('manage-teams-btn').addEventListener('click', () => {
+                if (!isAdmin()) {
+                    showNotification('Admin Access Required', 'Only administrators can manage teams');
+                    return;
+                }
+                showNotification('Team Management', 'Opening team management interface...');
+            });
+            
+            document.getElementById('auto-generate-fixtures').addEventListener('click', () => {
+                if (!isAdmin()) {
+                    showNotification('Admin Access Required', 'Only administrators can generate fixtures');
+                    return;
+                }
+                autoGenerateFixtures();
+            });
+            
+            document.getElementById('edit-fixture-btn').addEventListener('click', () => {
+                if (!isAdmin()) {
+                    showNotification('Admin Access Required', 'Only administrators can edit fixtures');
+                    return;
+                }
+                showNotification('Edit Fixtures', 'Select a fixture to edit from the table below');
+            });
+            
+            document.getElementById('refresh-upcoming').addEventListener('click', () => {
+                renderMatches();
+                showNotification('Matches Refreshed', 'Latest match data loaded successfully.');
+            });
+            
+            document.getElementById('refresh-completed').addEventListener('click', () => {
+                renderCompletedMatches();
+                showNotification('History Refreshed', 'Match history updated.');
+            });
+            
+            document.getElementById('refresh-my-matches').addEventListener('click', () => {
+                renderMyMatches();
+                showNotification('My Matches', 'Your team fixtures updated.');
+            });
+            
+            document.getElementById('refresh-updates').addEventListener('click', () => {
+                renderUpdates();
+                showNotification('Updates Refreshed', 'Latest updates loaded.');
+            });
+            
+            document.getElementById('refresh-leaderboard').addEventListener('click', () => {
+                renderPredictionLeaderboard();
+                showNotification('Leaderboard Updated', 'Prediction leaderboard refreshed.');
+            });
+            
+            document.getElementById('clear-update-form').addEventListener('click', () => {
+                adminUpdateForm.reset();
+                showNotification('Form Cleared', 'Admin update form has been cleared.');
+            });
+            
+            document.getElementById('clear-player-form').addEventListener('click', () => {
+                playerRegistrationForm.reset();
+                showNotification('Form Cleared', 'Player registration form has been cleared.');
+            });
+            
+            // Tournament filter buttons
+            document.getElementById('filter-active').addEventListener('click', () => filterTournaments('active'));
+            document.getElementById('filter-upcoming').addEventListener('click', () => filterTournaments('upcoming'));
+            document.getElementById('filter-completed').addEventListener('click', () => filterTournaments('completed'));
+            
+            // Coach section buttons
+            document.getElementById('generate-invite-btn').addEventListener('click', generateInviteLink);
+            document.getElementById('copy-invite-btn').addEventListener('click', copyInviteLink);
+            document.getElementById('email-invite-btn').addEventListener('click', () => {
+                showNotification('Email Invite', 'Invite link has been copied to clipboard for email');
+            });
+            
+            document.getElementById('whatsapp-invite-btn').addEventListener('click', () => {
+                showNotification('WhatsApp Invite', 'Opening WhatsApp to share invite link');
+            });
+        }
+
+        // Unlock admin panel
+        function unlockAdminPanel() {
+            const password = document.getElementById('admin-password').value;
+            
+            if (verifyPassword(password, state.adminPassword)) {
+                state.isAdminAuthenticated = true;
+                adminPasswordOverlay.style.display = 'none';
+                showNotification('Admin Access Granted', 'Welcome to the admin control panel');
+                
+                // Clear password field
+                document.getElementById('admin-password').value = '';
+                
+                // Show admin controls
+                adminControls.style.display = 'flex';
+            } else {
+                showNotification('Access Denied', 'Invalid admin password');
+                document.getElementById('admin-password').value = '';
+                document.getElementById('admin-password').focus();
+            }
+        }
+
+        // Unlock fixtures management
+        function unlockFixtures() {
+            const password = document.getElementById('fixtures-password').value;
+            
+            if (verifyPassword(password, state.adminPassword)) {
+                state.fixturesLocked = false;
+                fixturesPasswordOverlay.style.display = 'none';
+                showNotification('Fixtures Unlocked', 'You can now create and edit fixtures');
+                
+                // Clear password field
+                document.getElementById('fixtures-password').value = '';
+            } else {
+                showNotification('Access Denied', 'Invalid admin password');
+                document.getElementById('fixtures-password').value = '';
+                document.getElementById('fixtures-password').focus();
+            }
+        }
+
+        // Lock admin panel
+        function lockAdminPanel() {
+            state.isAdminAuthenticated = false;
+            adminPasswordOverlay.style.display = 'flex';
+            showNotification('Admin Panel Locked', 'Admin panel has been locked for security');
+        }
+
+        // Generate invite link
+        function generateInviteLink() {
+            const inviteCode = 'INVITE-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+            const inviteLink = `https://efootball-showdown.com/join/${inviteCode}`;
+            
+            document.getElementById('invite-link-input').value = inviteLink;
+            showNotification('Invite Link Generated', 'New invite link has been created');
+            
+            // Add to admin actions
+            const now = new Date();
+            const adminActionTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            state.adminActions.unshift({
+                time: adminActionTime,
+                action: 'Generated invite link',
+                user: state.currentUser.name,
+                details: `Invite code: ${inviteCode}`
+            });
+            
+            renderAdminActions();
+        }
+
+        // Copy invite link
+        function copyInviteLink() {
+            const inviteInput = document.getElementById('invite-link-input');
+            inviteInput.select();
+            document.execCommand('copy');
+            showNotification('Copied to Clipboard', 'Invite link has been copied');
+        }
+
+        // Render tournament cards
+        function renderTournamentCards() {
+            tournamentGrid.innerHTML = '';
+            
+            state.tournaments.forEach(tournament => {
+                const card = document.createElement('div');
+                card.className = 'tournament-card';
+                
+                let typeClass = '';
+                let typeText = '';
+                
+                switch(tournament.type) {
+                    case 'league':
+                        typeClass = 'type-league';
+                        typeText = 'LEAGUE';
+                        break;
+                    case 'champions':
+                        typeClass = 'type-champions';
+                        typeText = 'CHAMPIONS';
+                        break;
+                    case 'worldcup':
+                        typeClass = 'type-worldcup';
+                        typeText = 'WORLD CUP';
+                        break;
+                }
+                
+                let statusClass = '';
+                let statusText = '';
+                
+                switch(tournament.status) {
+                    case 'active':
+                        statusClass = 'status-active';
+                        statusText = 'ACTIVE';
+                        break;
+                    case 'upcoming':
+                        statusClass = 'status-upcoming';
+                        statusText = 'UPCOMING';
+                        break;
+                    case 'completed':
+                        statusClass = 'status-completed';
+                        statusText = 'COMPLETED';
+                        break;
+                }
+                
+                card.innerHTML = `
+                    <div class="tournament-type ${typeClass}">${typeText}</div>
+                    <h3 style="font-size: 1.4rem; margin-bottom: 10px; color: var(--primary);">${tournament.name}</h3>
+                    <p style="color: #aaa; margin-bottom: 15px; font-size: 0.9rem;">${tournament.description}</p>
+                    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                        <div>
+                            <div style="font-size: 0.9rem; color: #aaa;">Teams</div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--light);">${tournament.teams}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.9rem; color: #aaa;">Start Date</div>
+                            <div style="font-size: 1.1rem; font-weight: 600; color: var(--light);">${formatDate(tournament.startDate)}</div>
+                        </div>
+                    </div>
+                    <div class="tournament-status ${statusClass}">${statusText}</div>
+                `;
+                
+                tournamentGrid.appendChild(card);
+            });
+        }
+
+        // Render matches
+        function renderMatches() {
+            matchesContainer.innerHTML = '';
+            
+            const upcomingMatches = state.matches.filter(match => match.status === 'scheduled');
+            
+            if (upcomingMatches.length === 0) {
+                matchesContainer.innerHTML = '<p style="text-align: center; color: #aaa; padding: 30px;">No upcoming matches scheduled</p>';
+                return;
+            }
+            
+            upcomingMatches.forEach(match => {
+                const matchCard = createMatchCard(match);
+                matchesContainer.appendChild(matchCard);
+            });
+        }
+
+        // Render live matches
+        function renderLiveMatches() {
+            liveMatchesContainer.innerHTML = '';
+            
+            const liveMatches = state.matches.filter(match => match.status === 'live');
+            
+            if (liveMatches.length === 0) {
+                liveMatchesContainer.innerHTML = '<p style="text-align: center; color: #aaa; padding: 30px;">No live matches at the moment</p>';
+                return;
+            }
+            
+            liveMatches.forEach(match => {
+                const matchCard = createMatchCard(match, true);
+                liveMatchesContainer.appendChild(matchCard);
+            });
+        }
+
+        // Render completed matches
+        function renderCompletedMatches() {
+            completedMatchesContainer.innerHTML = '';
+            
+            const completedMatches = state.matches.filter(match => match.status === 'completed');
+            
+            if (completedMatches.length === 0) {
+                completedMatchesContainer.innerHTML = '<p style="text-align: center; color: #aaa; padding: 30px;">No completed matches yet</p>';
+                return;
+            }
+            
+            completedMatches.forEach(match => {
+                const matchCard = createMatchCard(match);
+                completedMatchesContainer.appendChild(matchCard);
+            });
+        }
+
+        // Render user's team matches
+        function renderMyMatches() {
+            myMatchesContainer.innerHTML = '';
+            
+            const userTeam = state.currentUser.team;
+            const userMatches = state.matches.filter(match => 
+                match.homeTeam === userTeam || match.awayTeam === userTeam
+            );
+            
+            if (userMatches.length === 0) {
+                myMatchesContainer.innerHTML = '<p style="text-align: center; color: #aaa; padding: 30px;">No matches for your team</p>';
+                return;
+            }
+            
+            userMatches.forEach(match => {
+                const matchCard = createMatchCard(match);
+                myMatchesContainer.appendChild(matchCard);
+            });
+        }
+
+        // Create a match card
+        function createMatchCard(match, isLive = false) {
+            const matchCard = document.createElement('div');
+            matchCard.className = 'match-card';
+            
+            const homeScore = match.homeScore !== null ? match.homeScore : '-';
+            const awayScore = match.awayScore !== null ? match.awayScore : '-';
+            
+            // Check if user has predicted this match
+            const userPrediction = match.predictions.find(p => p.userId === state.currentUser.id);
+            const hasPrediction = userPrediction !== undefined;
+            
+            let predictionBadge = '';
+            if (hasPrediction && match.status === 'completed') {
+                const points = userPrediction.points || 0;
+                predictionBadge = `<div style="margin-top: 10px; color: ${points > 0 ? 'var(--success)' : 'var(--secondary)'}; font-weight: 600;">
+                    <i class="fas fa-crystal-ball"></i> Your prediction: ${userPrediction.homeScore}-${userPrediction.awayScore} (${points} points)
+                </div>`;
+            } else if (hasPrediction) {
+                predictionBadge = `<div style="margin-top: 10px; color: var(--accent); font-weight: 600;">
+                    <i class="fas fa-crystal-ball"></i> Your prediction: ${userPrediction.homeScore}-${userPrediction.awayScore}
+                </div>`;
+            }
+            
+            matchCard.innerHTML = `
+                <div class="teams">
+                    <div class="team">
+                        <div class="team-logo">${match.homeTeam.substring(0, 1)}</div>
+                        <div class="team-name">${match.homeTeam}</div>
+                    </div>
+                    <div class="vs">VS</div>
+                    <div class="team">
+                        <div class="team-logo">${match.awayTeam.substring(0, 1)}</div>
+                        <div class="team-name">${match.awayTeam}</div>
+                    </div>
+                </div>
+                <div class="score">
+                    <span>${homeScore}</span>
+                    <span>:</span>
+                    <span>${awayScore}</span>
+                </div>
+                <div class="match-info">
+                    <div class="match-date">${formatDate(match.date)}</div>
+                    <div class="match-round">${match.round} • ${match.tournament}</div>
+                    <div style="margin-top: 10px;">
+                        <span class="tournament-status ${getStatusClass(match.status)}">${match.status.toUpperCase()}</span>
+                    </div>
+                    ${predictionBadge}
+                    ${match.status === 'scheduled' ? `
+                    <div style="margin-top: 10px;">
+                        <button class="btn btn-accent btn-sm btn-predict btn-motion" data-match-id="${match.id}" style="padding: 8px 15px; font-size: 0.9rem;">
+                            <i class="fas fa-crystal-ball"></i> ${hasPrediction ? 'Update Prediction' : 'Make Prediction'}
+                        </button>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            return matchCard;
+        }
+
+        // Render standings table
+        function renderStandings() {
+            standingsTableBody.innerHTML = '';
+            
+            state.standings.forEach(team => {
+                const row = document.createElement('tr');
+                if (team.qualified) row.classList.add('qualified');
+                
+                // Create form indicators
+                const formIndicators = team.form.map(result => {
+                    let color = '';
+                    let text = result;
+                    switch(result) {
+                        case 'W': color = 'var(--success)'; text = 'W'; break;
+                        case 'D': color = 'var(--warning)'; text = 'D'; break;
+                        case 'L': color = 'var(--secondary)'; text = 'L'; break;
+                    }
+                    return `<span class="form-indicator" style="background: ${color}">${text}</span>`;
+                }).join('');
+                
+                row.innerHTML = `
+                    <td><strong>${team.position}</strong></td>
+                    <td><strong>${team.team}</strong></td>
+                    <td>${team.played}</td>
+                    <td>${team.wins}</td>
+                    <td>${team.draws}</td>
+                    <td>${team.losses}</td>
+                    <td>${team.goalsFor}</td>
+                    <td>${team.goalsAgainst}</td>
+                    <td><strong>${team.goalDifference > 0 ? '+' : ''}${team.goalDifference}</strong></td>
+                    <td><strong style="color: var(--primary);">${team.points}</strong></td>
+                    <td>${formIndicators}</td>
+                `;
+                
+                standingsTableBody.appendChild(row);
+            });
+        }
+
+        // Render tournament bracket
+        function renderBracket() {
+            bracketVisualization.innerHTML = '';
+            
+            const rounds = ['Round of 16', 'Quarterfinals', 'Semifinals', 'Final'];
+            
+            rounds.forEach(roundName => {
+                const roundDiv = document.createElement('div');
+                roundDiv.className = 'bracket-round';
+                
+                const roundTitle = document.createElement('div');
+                roundTitle.className = 'round-title';
+                roundTitle.textContent = roundName;
+                roundDiv.appendChild(roundTitle);
+                
+                const roundMatches = state.bracketMatches.filter(match => match.round === roundName);
+                
+                roundMatches.forEach(match => {
+                    const matchDiv = document.createElement('div');
+                    matchDiv.className = 'bracket-match';
+                    
+                    const score1 = match.score1 !== null ? match.score1 : '-';
+                    const score2 = match.score2 !== null ? match.score2 : '-';
+                    
+                    matchDiv.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <div>${match.team1 || 'TBD'}</div>
+                            <div><strong>${score1}</strong></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>${match.team2 || 'TBD'}</div>
+                            <div><strong>${score2}</strong></div>
+                        </div>
+                        <div style="text-align: center; margin-top: 10px; font-size: 0.8rem; color: #aaa;">
+                            ${roundName} • Match ${match.match}
+                        </div>
+                    `;
+                    
+                    roundDiv.appendChild(matchDiv);
+                });
+                
+                bracketVisualization.appendChild(roundDiv);
+            });
+        }
+
+        // Render admin actions log
+        function renderAdminActions() {
+            const adminActionsLog = document.getElementById('admin-actions-log');
+            adminActionsLog.innerHTML = '';
+            
+            state.adminActions.forEach(action => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${action.time}</td>
+                    <td><strong>${action.action}</strong></td>
+                    <td>${action.user}</td>
+                    <td>${action.details}</td>
+                `;
+                
+                adminActionsLog.appendChild(row);
+            });
+        }
+
+        // Render updates feed
+        function renderUpdates() {
+            updatesFeed.innerHTML = '';
+            
+            state.updates.forEach(update => {
+                const updateItem = document.createElement('div');
+                updateItem.className = 'update-item';
+                
+                let icon = '';
+                switch(update.type) {
+                    case 'info': icon = '<i class="fas fa-info-circle"></i>'; break;
+                    case 'warning': icon = '<i class="fas fa-exclamation-triangle"></i>'; break;
+                    case 'success': icon = '<i class="fas fa-check-circle"></i>'; break;
+                    case 'fixture': icon = '<i class="fas fa-calendar-alt"></i>'; break;
+                    case 'result': icon = '<i class="fas fa-futbol"></i>'; break;
+                }
+                
+                updateItem.innerHTML = `
+                    <div class="update-time">${update.time}</div>
+                    <div class="update-content">
+                        <div class="update-icon">${icon}</div>
+                        <div>
+                            <div style="font-weight: 600; color: var(--primary);">${update.title}</div>
+                            <div style="margin-top: 5px;">${update.message}</div>
+                            ${update.tournament ? `<div style="margin-top: 5px; font-size: 0.9rem; color: #aaa;">Tournament: ${update.tournament}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+                
+                updatesFeed.appendChild(updateItem);
+            });
+        }
+
+        // Render predictions
+        function renderPredictions() {
+            predictionsContainer.innerHTML = '';
+            
+            // Get matches that are scheduled and not yet predicted by user
+            const scheduledMatches = state.matches.filter(match => match.status === 'scheduled');
+            const userPredictions = state.predictions.filter(p => p.userId === state.currentUser.id);
+            const predictedMatchIds = userPredictions.map(p => p.matchId);
+            
+            const matchesToPredict = scheduledMatches.filter(match => !predictedMatchIds.includes(match.id));
+            
+            if (matchesToPredict.length === 0) {
+                predictionsContainer.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #aaa;">
+                        <i class="fas fa-crystal-ball" style="font-size: 3rem; margin-bottom: 20px; color: var(--accent);"></i>
+                        <h3 style="color: var(--primary); margin-bottom: 10px;">All Matches Predicted!</h3>
+                        <p>You have made predictions for all upcoming matches. Check back later for new fixtures.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            matchesToPredict.forEach(match => {
+                const predictionCard = document.createElement('div');
+                predictionCard.className = 'prediction-card';
+                
+                // Get prediction stats for this match
+                const existingPredictions = match.predictions || [];
+                const homeWinPredictions = existingPredictions.filter(p => p.homeScore > p.awayScore).length;
+                const awayWinPredictions = existingPredictions.filter(p => p.awayScore > p.homeScore).length;
+                const drawPredictions = existingPredictions.filter(p => p.homeScore === p.awayScore).length;
+                const totalPredictions = existingPredictions.length;
+                
+                predictionCard.innerHTML = `
+                    <div class="prediction-header">
+                        <div>
+                            <h4 style="color: var(--primary);">${match.homeTeam} vs ${match.awayTeam}</h4>
+                            <div style="font-size: 0.9rem; color: #aaa;">${match.round} • ${formatDate(match.date)}</div>
+                        </div>
+                        <button class="btn btn-accent btn-predict btn-motion" data-match-id="${match.id}">
+                            <i class="fas fa-crystal-ball"></i> Make Prediction
+                        </button>
+                    </div>
+                    
+                    ${totalPredictions > 0 ? `
+                    <div style="margin-top: 15px;">
+                        <div style="font-size: 0.9rem; color: #aaa; margin-bottom: 8px;">Community Predictions:</div>
+                        <div style="display: flex; gap: 10px;">
+                            <div style="flex: 1; text-align: center; padding: 10px; background: rgba(0, 243, 255, 0.1); border-radius: 6px;">
+                                <div style="font-weight: 700; color: var(--primary);">${match.homeTeam}</div>
+                                <div style="font-size: 1.2rem; font-weight: 700; margin-top: 5px;">${homeWinPredictions}</div>
+                                <div style="font-size: 0.8rem; color: #aaa;">${totalPredictions > 0 ? Math.round((homeWinPredictions / totalPredictions) * 100) : 0}%</div>
+                            </div>
+                            <div style="flex: 1; text-align: center; padding: 10px; background: rgba(157, 78, 221, 0.1); border-radius: 6px;">
+                                <div style="font-weight: 700; color: var(--accent);">Draw</div>
+                                <div style="font-size: 1.2rem; font-weight: 700; margin-top: 5px;">${drawPredictions}</div>
+                                <div style="font-size: 0.8rem; color: #aaa;">${totalPredictions > 0 ? Math.round((drawPredictions / totalPredictions) * 100) : 0}%</div>
+                            </div>
+                            <div style="flex: 1; text-align: center; padding: 10px; background: rgba(255, 0, 85, 0.1); border-radius: 6px;">
+                                <div style="font-weight: 700; color: var(--secondary);">${match.awayTeam}</div>
+                                <div style="font-size: 1.2rem; font-weight: 700; margin-top: 5px;">${awayWinPredictions}</div>
+                                <div style="font-size: 0.8rem; color: #aaa;">${totalPredictions > 0 ? Math.round((awayWinPredictions / totalPredictions) * 100) : 0}%</div>
+                            </div>
+                        </div>
+                    </div>
+                    ` : `
+                    <div style="margin-top: 15px; padding: 15px; background: rgba(30, 30, 50, 0.5); border-radius: 8px; text-align: center; color: #aaa;">
+                        <i class="fas fa-chart-line"></i> No predictions yet. Be the first to predict this match!
+                    </div>
+                    `}
+                `;
+                
+                predictionsContainer.appendChild(predictionCard);
+            });
+        }
+
+        // Render prediction leaderboard
+        function renderPredictionLeaderboard() {
+            predictionLeaderboard.innerHTML = '';
+            
+            state.predictionLeaderboard.forEach((user, index) => {
+                const leaderboardItem = document.createElement('div');
+                leaderboardItem.className = 'leaderboard-item';
+                
+                // Highlight current user
+                if (user.id === state.currentUser.id) {
+                    leaderboardItem.style.background = 'rgba(157, 78, 221, 0.2)';
+                    leaderboardItem.style.borderLeft = '4px solid var(--accent)';
+                }
+                
+                leaderboardItem.innerHTML = `
+                    <div class="leaderboard-rank">#${index + 1}</div>
+                    <div class="leaderboard-user">
+                        <div class="leaderboard-avatar">${user.avatar}</div>
+                        <div>
+                            <div style="font-weight: 600;">${user.name}</div>
+                            <div style="font-size: 0.9rem; color: #aaa;">${user.correctPredictions} correct predictions</div>
+                        </div>
+                    </div>
+                    <div class="leaderboard-points">${user.points} pts</div>
+                `;
+                
+                predictionLeaderboard.appendChild(leaderboardItem);
+            });
+        }
+
+        // Render registered players
+        function renderRegisteredPlayers()
