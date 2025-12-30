@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Coach Portal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1 class="glow">Coach Portal</h1>
+
+  <div class="card">
+    <input id="password" type="password" placeholder="Admin Password">
+    <button onclick="login()">Login</button>
+  </div>
+
+  <div class="card hidden" id="adminPanel">
+    <h2>Update Match</h2>
+    <input id="event" placeholder="Event Name">
+    <input id="teamA" placeholder="Team A">
+    <input id="teamB" placeholder="Team B">
+    <input id="scoreA" type="number" placeholder="Score A">
+    <input id="scoreB" type="number" placeholder="Score B">
+    <button onclick="updateMatch()">Update</button>
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>
