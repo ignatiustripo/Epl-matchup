@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>eFootballShowdown</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+ --cyan:#22d3ee;
+ --blue:#3b82f6;
+ --dark:#020617;
+ --glass:rgba(2,6,23,.85);
+}
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Segoe UI,Arial;
+ background:radial-gradient(circle at top,#0f172a,#020617);
+ color:#e5e7eb;
+}
+nav{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ padding:16px 24px;
+ backdrop-filter:blur(14px);
+ background:rgba(0,0,0,.6);
+ box-shadow:0 0 35px var(--cyan);
+}
+nav h1{
+ color:var(--cyan);
+ text-shadow:0 0 18px var(--cyan);
+}
+nav a{
+ margin-left:20px;
+ color:#fff;
+ text-decoration:none;
+ font-weight:600;
+}
+nav a:hover{color:var(--cyan)}
+
+.container{
+ max-width:1200px;
+ margin:auto;
+ padding:20px;
+ animation:fade .8s ease;
+}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
+
+.card{
+ background:var(--glass);
+ border:1px solid #1e293b;
+ border-radius:20px;
+ padding:22px;
+ margin-bottom:26px;
+ box-shadow:0 0 30px rgba(34,211,238,.35);
+}
+
+h2,h3{
+ color:var(--cyan);
+ text-shadow:0 0 10px var(--cyan);
+}
+
+button{
+ background:linear-gradient(90deg,var(--blue),var(--cyan));
+ border:none;
+ color:#020617;
+ font-weight:800;
+ padding:10px 18px;
+ border-radius:14px;
+ cursor:pointer;
+ box-shadow:0 0 22px var(--cyan);
+ transition:.3s;
+}
+button:hover{
+ transform:scale(1.06);
+ box-shadow:0 0 40px var(--cyan);
+}
+
+input,select{
+ width:100%;
+ padding:10px;
+ margin-top:8px;
+ margin-bottom:12px;
+ border-radius:12px;
+ border:none;
+ background:#020617;
+ color:white;
+ border:1px solid #1e293b;
+}
+
+.hidden{display:none}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+ gap:20px;
+}
+
+table{
+ width:100%;
+ border-collapse:collapse;
+ margin-top:12px;
+}
+th,td{
+ padding:8px;
+ border-bottom:1px solid #1e293b;
+ text-align:center;
+}
+th{color:var(--cyan)}
+td.highlight{color:#fde047;font-weight:800}
+
+.badge{
+ display:inline-block;
+ padding:6px 12px;
+ border-radius:999px;
+ background:var(--cyan);
+ color:#020617;
+ font-weight:800;
+ margin:4px;
+}
+
+.trophy{
+ font-size:64px;
+ text-align:center;
+ animation:pop 1.2s infinite alternate;
+}
+@keyframes pop{
+ from{transform:scale(1)}
+ to{transform:scale(1.15)}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+ <h1>⚽ eFootballShowdown</h1>
+ <div>
+  <a href="#" onclick="show('dash')">Dashboard</a>
+  <a href="#" onclick="show('register')">Register</a>
+  <a href="#" onclick="show('adminLogin')">Admin</a>
+ </div>
+</nav>
+
+<div class="container">
+
+<!-- DASHBOARD -->
+<div id="dash" class="card">
+ <h2>Player Dashboard</h2>
+ <div class="grid">
+  <div class="card">
+   <h3>Total Players</h3>
+   <p class="badge" id="playerCount">0</p>
+  </div>
+  <div class="card">
+   <h3>Upcoming Events</h3>
+   <ul>
+    <li>🏆 League</li>
+    <li>⭐ Champions League</li>
+    <li>🌍 World Cup</li>
+   </ul>
+  </div>
+ </div>
+</div>
+
+<!-- REGISTER -->
+<div id="register" class="card hidden">
+ <h2>Player Registration</h2>
+ <input id="playerName" placeholder="Player Name">
+ <button onclick="registerPlayer()">Register</button>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div id="adminLogin" class="card hidden">
+ <h2>Admin Login</h2>
+ <input type="password" id="adminPass" placeholder="Admin Password">
+ <button onclick="adminLogin()">Login</button>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin" class="card hidden">
+ <h2>Admin Control Panel</h2>
+
+ <p>Players: <span class="badge" id="adminCount">0</span></p>
+
+ <select id="tournamentType">
+  <option value="league">League</option>
+  <option value="champions">Champions League</option>
+  <option value="worldcup">World Cup</option>
+ </select>
+
+ <input id="teamInput" placeholder="Team Name">
+ <button onclick="addTeam()">Add Team</button>
+
+ <button onclick="generateTournament()">Generate Tournament</button>
+
+ <h3>Teams</h3>
+ <div id="teams"></div>
+
+ <h3>Matches</h3>
+ <div id="matches"></div>
+
+ <h3>Standings</h3>
+ <table id="table"></table>
+
+ <div id="winner"></div>
+</div>
+
+</div>
+
+<script>
+const ADMIN_PASSWORD="admin123";
+
+let players=JSON.parse(localStorage.getItem("players")||"[]");
+let teams=JSON.parse(localStorage.getItem("teams")||"[]");
+let matches=JSON.parse(localStorage.getItem("matches")||"[]");
+
+function save(){
+ localStorage.setItem("players",JSON.stringify(players));
+ localStorage.setItem("teams",JSON.stringify(teams));
+ localStorage.setItem("matches",JSON.stringify(matches));
+}
+
+function show(id){
+ document.querySelectorAll('.card').forEach(c=>c.classList.add('hidden'));
+ document.getElementById(id).classList.remove('hidden');
+}
+
+function registerPlayer(){
+ const n=playerName.value.trim();
+ if(!n)return;
+ players.push(n);
+ save();
+ playerName.value="";
+ updateCounts();
+}
+
+function updateCounts(){
+ playerCount.innerText=players.length;
+ adminCount.innerText=players.length;
+}
+updateCounts();
+
+function adminLogin(){
+ if(adminPass.value===ADMIN_PASSWORD){
+  show("admin");
+ } else alert("Wrong password");
+}
+
+function addTeam(){
+ const n=teamInput.value.trim();
+ if(!n)return;
+ teams.push({name:n,P:0,W:0,D:0,L:0,GF:0,GA:0,PTS:0});
+ teamInput.value="";
+ save();
+ renderTeams();
+}
+
+function renderTeams(){
+ teamsDiv.innerHTML="";
+ teams.forEach(t=>teamsDiv.innerHTML+=`<span class="badge">${t.name}</span>`);
+}
+renderTeams();
+
+function generateTournament(){
+ matches=[];
+ teams.forEach(t=>Object.assign(t,{P:0,W:0,D:0,L:0,GF:0,GA:0,PTS:0}));
+ for(let i=0;i<teams.length;i++)
+  for(let j=i+1;j<teams.length;j++)
+   matches.push({h:teams[i],a:teams[j],played:false});
+ save();
+ renderMatches();
+ renderTable();
+}
+
+function renderMatches(){
+ matchesDiv.innerHTML="";
+ matches.forEach((m,i)=>{
+  matchesDiv.innerHTML+=`
+   ${m.h.name} vs ${m.a.name}
+   <input id="h${i}" type="number" min="0" style="width:60px">
+   <input id="a${i}" type="number" min="0" style="width:60px">
+   <button onclick="play(${i})">Submit</button><br>`;
+ });
+}
+
+function play(i){
+ const m=matches[i];
+ if(m.played)return;
+ const h=+document.getElementById("h"+i).value;
+ const a=+document.getElementById("a"+i).value;
+ m.played=true;
+
+ m.h.P++;m.a.P++;
+ m.h.GF+=h;m.h.GA+=a;
+ m.a.GF+=a;m.a.GA+=h;
+
+ if(h>a){m.h.W++;m.h.PTS+=3;m.a.L++}
+ else if(a>h){m.a.W++;m.a.PTS+=3;m.h.L++}
+ else{m.h.D++;m.a.D++;m.h.PTS++;m.a.PTS++;}
+
+ save();
+ renderTable();
+}
+
+function renderTable(){
+ const s=[...teams].sort((a,b)=>b.PTS-a.PTS||(b.GF-b.GA)-(a.GF-a.GA));
+ table.innerHTML='<tr><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>PTS</th></tr>';
+ s.forEach((x,i)=>{
+  table.innerHTML+=`<tr>
+   <td>${x.name}</td><td>${x.P}</td><td>${x.W}</td>
+   <td>${x.D}</td><td>${x.L}</td>
+   <td>${x.GF-x.GA}</td>
+   <td class="highlight">${x.PTS}</td>
+  </tr>`;
+ });
+ if(matches.every(m=>m.played) && s[0]){
+  winner.innerHTML=`<div class="trophy">🏆</div><h2>Champion: ${s[0].name}</h2>`;
+ }
+}
+
+renderMatches();
+renderTable();
+</script>
+
+</body>
+</html>
